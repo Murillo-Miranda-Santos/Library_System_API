@@ -1,0 +1,122 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\alman\\OneDrive\\Documents\\DEVELOPMENT\\C# Development\\Https\\Projetos\\LibrarySystemAPI\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{9493E4B3-567B-E223-61EF-D50C800173D2}|LibrarySystemAPI\\LibrarySystemAPI.csproj|c:\\users\\alman\\onedrive\\documents\\development\\c# development\\https\\projetos\\librarysystemapi\\librarysystemapi\\services\\loanservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9493E4B3-567B-E223-61EF-D50C800173D2}|LibrarySystemAPI\\LibrarySystemAPI.csproj|solutionrelative:librarysystemapi\\services\\loanservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9493E4B3-567B-E223-61EF-D50C800173D2}|LibrarySystemAPI\\LibrarySystemAPI.csproj|c:\\users\\alman\\onedrive\\documents\\development\\c# development\\https\\projetos\\librarysystemapi\\librarysystemapi\\services\\bookservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9493E4B3-567B-E223-61EF-D50C800173D2}|LibrarySystemAPI\\LibrarySystemAPI.csproj|solutionrelative:librarysystemapi\\services\\bookservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9493E4B3-567B-E223-61EF-D50C800173D2}|LibrarySystemAPI\\LibrarySystemAPI.csproj|c:\\users\\alman\\onedrive\\documents\\development\\c# development\\https\\projetos\\librarysystemapi\\librarysystemapi\\controllers\\loancontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9493E4B3-567B-E223-61EF-D50C800173D2}|LibrarySystemAPI\\LibrarySystemAPI.csproj|solutionrelative:librarysystemapi\\controllers\\loancontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9493E4B3-567B-E223-61EF-D50C800173D2}|LibrarySystemAPI\\LibrarySystemAPI.csproj|c:\\users\\alman\\onedrive\\documents\\development\\c# development\\https\\projetos\\librarysystemapi\\librarysystemapi\\controllers\\bookcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9493E4B3-567B-E223-61EF-D50C800173D2}|LibrarySystemAPI\\LibrarySystemAPI.csproj|solutionrelative:librarysystemapi\\controllers\\bookcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9493E4B3-567B-E223-61EF-D50C800173D2}|LibrarySystemAPI\\LibrarySystemAPI.csproj|c:\\users\\alman\\onedrive\\documents\\development\\c# development\\https\\projetos\\librarysystemapi\\librarysystemapi\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9493E4B3-567B-E223-61EF-D50C800173D2}|LibrarySystemAPI\\LibrarySystemAPI.csproj|solutionrelative:librarysystemapi\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9493E4B3-567B-E223-61EF-D50C800173D2}|LibrarySystemAPI\\LibrarySystemAPI.csproj|c:\\users\\alman\\onedrive\\documents\\development\\c# development\\https\\projetos\\librarysystemapi\\librarysystemapi\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9493E4B3-567B-E223-61EF-D50C800173D2}|LibrarySystemAPI\\LibrarySystemAPI.csproj|solutionrelative:librarysystemapi\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "LoanService.cs",
+              "DocumentMoniker": "C:\\Users\\alman\\OneDrive\\Documents\\DEVELOPMENT\\C# Development\\Https\\Projetos\\LibrarySystemAPI\\LibrarySystemAPI\\Services\\LoanService.cs",
+              "RelativeDocumentMoniker": "LibrarySystemAPI\\Services\\LoanService.cs",
+              "ToolTip": "C:\\Users\\alman\\OneDrive\\Documents\\DEVELOPMENT\\C# Development\\Https\\Projetos\\LibrarySystemAPI\\LibrarySystemAPI\\Services\\LoanService.cs",
+              "RelativeToolTip": "LibrarySystemAPI\\Services\\LoanService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-06T12:00:27.83Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "UserService.cs",
+              "DocumentMoniker": "C:\\Users\\alman\\OneDrive\\Documents\\DEVELOPMENT\\C# Development\\Https\\Projetos\\LibrarySystemAPI\\LibrarySystemAPI\\Services\\UserService.cs",
+              "RelativeDocumentMoniker": "LibrarySystemAPI\\Services\\UserService.cs",
+              "ToolTip": "C:\\Users\\alman\\OneDrive\\Documents\\DEVELOPMENT\\C# Development\\Https\\Projetos\\LibrarySystemAPI\\LibrarySystemAPI\\Services\\UserService.cs",
+              "RelativeToolTip": "LibrarySystemAPI\\Services\\UserService.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAgwBYAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-06T12:00:27.01Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "BookService.cs",
+              "DocumentMoniker": "C:\\Users\\alman\\OneDrive\\Documents\\DEVELOPMENT\\C# Development\\Https\\Projetos\\LibrarySystemAPI\\LibrarySystemAPI\\Services\\BookService.cs",
+              "RelativeDocumentMoniker": "LibrarySystemAPI\\Services\\BookService.cs",
+              "ToolTip": "C:\\Users\\alman\\OneDrive\\Documents\\DEVELOPMENT\\C# Development\\Https\\Projetos\\LibrarySystemAPI\\LibrarySystemAPI\\Services\\BookService.cs",
+              "RelativeToolTip": "LibrarySystemAPI\\Services\\BookService.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAQwBoAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-06T12:00:25.075Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "LoanController.cs",
+              "DocumentMoniker": "C:\\Users\\alman\\OneDrive\\Documents\\DEVELOPMENT\\C# Development\\Https\\Projetos\\LibrarySystemAPI\\LibrarySystemAPI\\Controllers\\LoanController.cs",
+              "RelativeDocumentMoniker": "LibrarySystemAPI\\Controllers\\LoanController.cs",
+              "ToolTip": "C:\\Users\\alman\\OneDrive\\Documents\\DEVELOPMENT\\C# Development\\Https\\Projetos\\LibrarySystemAPI\\LibrarySystemAPI\\Controllers\\LoanController.cs",
+              "RelativeToolTip": "LibrarySystemAPI\\Controllers\\LoanController.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAA5wDkAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-06T12:00:16.798Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "UserController.cs",
+              "DocumentMoniker": "C:\\Users\\alman\\OneDrive\\Documents\\DEVELOPMENT\\C# Development\\Https\\Projetos\\LibrarySystemAPI\\LibrarySystemAPI\\Controllers\\UserController.cs",
+              "RelativeDocumentMoniker": "LibrarySystemAPI\\Controllers\\UserController.cs",
+              "ToolTip": "C:\\Users\\alman\\OneDrive\\Documents\\DEVELOPMENT\\C# Development\\Https\\Projetos\\LibrarySystemAPI\\LibrarySystemAPI\\Controllers\\UserController.cs",
+              "RelativeToolTip": "LibrarySystemAPI\\Controllers\\UserController.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAAAowEEAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-06T12:00:15.657Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "BookController.cs",
+              "DocumentMoniker": "C:\\Users\\alman\\OneDrive\\Documents\\DEVELOPMENT\\C# Development\\Https\\Projetos\\LibrarySystemAPI\\LibrarySystemAPI\\Controllers\\BookController.cs",
+              "RelativeDocumentMoniker": "LibrarySystemAPI\\Controllers\\BookController.cs",
+              "ToolTip": "C:\\Users\\alman\\OneDrive\\Documents\\DEVELOPMENT\\C# Development\\Https\\Projetos\\LibrarySystemAPI\\LibrarySystemAPI\\Controllers\\BookController.cs",
+              "RelativeToolTip": "LibrarySystemAPI\\Controllers\\BookController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEEAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-06T12:00:11.98Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
