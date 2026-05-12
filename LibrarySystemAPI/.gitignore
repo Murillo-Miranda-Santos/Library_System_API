@@ -7,3 +7,4 @@ obj/
 *.log
 *.db
 appsettings.Development.json
+appsettings.json

@@ -8,18 +8,23 @@ namespace LibrarySystemAPI.Controllers
     [Route("books")]
     public class BookController : ControllerBase
     {
-        private readonly BookService bookService = new BookService();
+        private readonly BookService _bookService;
+
+        public BookController(BookService bookService)
+        {
+            _bookService = bookService;
+        }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(bookService.GetAllBooks());
+            return Ok(_bookService.GetAllBooks());
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var book = bookService.GetBook(id);
+            var book = _bookService.GetBook(id);
 
             if (book == null)
                 return NotFound("Book not found.");
@@ -30,7 +35,7 @@ namespace LibrarySystemAPI.Controllers
         [HttpPost]
         public IActionResult Post(Book book)
         {
-            var created = bookService.PostBook(book);
+            var created = _bookService.PostBook(book);
 
             if (created == null)
                 return BadRequest("Invalid book data.");
@@ -41,7 +46,7 @@ namespace LibrarySystemAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, Book updatedBook)
         {
-            var book = bookService.PutBook(id, updatedBook);
+            var book = _bookService.PutBook(id, updatedBook);
 
             if (book == null)
                 return NotFound("Book not found.");
@@ -52,7 +57,7 @@ namespace LibrarySystemAPI.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var result = bookService.DeleteBook(id);
+            var result = _bookService.DeleteBook(id);
 
             if (result == null)
                 return NotFound("Book not found.");

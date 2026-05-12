@@ -3,18 +3,21 @@ namespace LibrarySystemAPI.Services;
 
 public class UserService
 {
+    private readonly LibraryContext _context;
+
+    public UserService(LibraryContext context)
+    {
+        _context = context;
+    }
+
     public List<User>? GetAllUsers()
     {
-        var users = DataStore.users;
-
-        return users;
+        return _context.Users.ToList();
     }
 
     public User? GetUser(int id)
     {
-        var user = DataStore.users.FirstOrDefault(x => x.Id == id);
-
-        return user;
+        return _context.Users.FirstOrDefault(x => x.Id == id);
     }
 
     public User? PostUser(User user)
@@ -22,16 +25,15 @@ public class UserService
         if (string.IsNullOrWhiteSpace(user.Name))
             return null;
 
-        user.Id = DataStore.users.Any() ? DataStore.users.Max(x => x.Id) + 1 : 1;
-
-        DataStore.users.Add(user);
+        _context.Users.Add(user);
+        _context.SaveChanges();
 
         return user;
     }
 
     public User? PutUser(int id, User updatedUser)
     {
-        var user = DataStore.users.FirstOrDefault(x => x.Id == id);
+        var user = _context.Users.FirstOrDefault(x => x.Id == id);
 
         if (user == null) 
             return null;
@@ -43,24 +45,26 @@ public class UserService
         };
 
         user.Name = updatedUser.Name;
+        _context.SaveChanges();
 
         return user;
     }
 
     public bool? DeleteUser(int id)
     {
-        var user = DataStore.users.FirstOrDefault(x => x.Id == id);
+        var user = _context.Users.FirstOrDefault(x => x.Id == id);
 
         if (user == null)
             return null;
 
-        var hasLoan = DataStore.loans.Any(x =>
+        var hasLoan = _context.Loans.Any(x =>
         x.UserId == id && x.ReturnDate == null);
 
         if (hasLoan == true) 
-            return false;
+             return false;
 
-        DataStore.users.Remove(user);
+        _context.Users.Remove(user);
+        _context.SaveChanges();
 
         return true;
     }

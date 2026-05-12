@@ -8,18 +8,23 @@ namespace LibrarySystemAPI.Controllers
     [Route("users")]
     public class UserController : ControllerBase
     {
-        private readonly UserService userService = new UserService();
+        private readonly UserService _userService;
+
+        public UserController(UserService userService)
+        {
+            _userService = userService;
+        }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(userService.GetAllUsers());
+            return Ok(_userService.GetAllUsers());
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var user = userService.GetUser(id);
+            var user = _userService.GetUser(id);
 
             if (user == null)
                 return NotFound("User not found.");
@@ -30,7 +35,7 @@ namespace LibrarySystemAPI.Controllers
         [HttpPost]
         public IActionResult Post(User user)
         {
-            var created = userService.PostUser(user);
+            var created = _userService.PostUser(user);
 
             if (created == null)
                 return BadRequest("Invalid user data.");
@@ -41,7 +46,7 @@ namespace LibrarySystemAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, User updatedUser)
         {
-            var user = userService.PutUser(id, updatedUser);
+            var user = _userService.PutUser(id, updatedUser);
 
             if (user == null)
                 return NotFound("User not found.");
@@ -52,7 +57,7 @@ namespace LibrarySystemAPI.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var result = userService.DeleteUser(id);
+            var result = _userService.DeleteUser(id);
 
             if (result == null)
                 return NotFound("User not found.");

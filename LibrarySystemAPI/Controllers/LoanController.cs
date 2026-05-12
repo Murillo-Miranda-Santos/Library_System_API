@@ -8,18 +8,23 @@ namespace LibrarySystemAPI.Controllers
     [Route("loans")]
     public class LoanController : ControllerBase
     {
-        private readonly LoanService loanService = new LoanService();
+        private readonly LoanService _loanService;
+
+        public LoanController(LoanService loanService)
+        {
+            _loanService = loanService;
+        }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(loanService.GetAllLoans());
+            return Ok(_loanService.GetAllLoans());
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var loan = loanService.GetLoan(id);
+            var loan = _loanService.GetLoan(id);
 
             if (loan == null)
                 return NotFound("Loan not found.");
@@ -30,7 +35,7 @@ namespace LibrarySystemAPI.Controllers
         [HttpPost]
         public IActionResult Post(Loan loan)
         {
-            var result = loanService.PostLoan(loan);
+            var result = _loanService.PostLoan(loan);
 
             if (result == null)
                 return NotFound("User or book not found.");
@@ -44,7 +49,7 @@ namespace LibrarySystemAPI.Controllers
         [HttpPost("return/{id}")]
         public IActionResult Return(int id)
         {
-            var result = loanService.PostReturn(id);
+            var result = _loanService.PostReturn(id);
 
             if (result == null)
                 return NotFound("Loan not found.");

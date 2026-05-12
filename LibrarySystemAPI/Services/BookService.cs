@@ -3,16 +3,21 @@ namespace LibrarySystemAPI.Services;
 
 public class BookService
 {
-    public List<Book>? GetAllBooks()
-    {
-        var books = DataStore.books;
+    private readonly LibraryContext _context;
 
-        return books;
+    public BookService(LibraryContext context)
+    {
+        _context = context;
+    }
+
+    public List<Book> GetAllBooks()
+    {
+        return _context.Books.ToList();
     }
 
     public Book? GetBook(int id)
     {
-        return DataStore.books.FirstOrDefault(x => x.Id == id);
+        return _context.Books.FirstOrDefault(x => x.Id == id);
     }
 
     public Book? PostBook(Book book)
@@ -20,38 +25,39 @@ public class BookService
         if (string.IsNullOrWhiteSpace(book.Title))
             return null;
 
-        book.Id = DataStore.books.Any() ? DataStore.books.Max(x => x.Id) + 1 : 1;
-
-        DataStore.books.Add(book);
+        _context.Books.Add(book);
+        _context.SaveChanges();
 
         return book;
     }
 
     public Book? PutBook(int id, Book updatedBook)
     {
-        var book = DataStore.books.FirstOrDefault(x => x.Id == id);
+        var book = _context.Books.FirstOrDefault(x => x.Id == id);
 
         if (book == null)
             return null;
 
         book.Title = updatedBook.Title;
+        _context.SaveChanges();
 
         return book;
     }
 
     public bool? DeleteBook(int id)
     {
-        var book = DataStore.books.FirstOrDefault(x => x.Id == id);
+        var book = _context.Books.FirstOrDefault(x => x.Id == id);
 
         if (book == null)
             return null;
 
-        var isLoaned = DataStore.loans.Any(x => x.BookId == id && x.ReturnDate == null); 
+        var isLoaned = _context.Loans.Any(x => x.BookId == id && x.ReturnDate == null); 
         
         if (isLoaned == true) 
             return false;
 
-        DataStore.books.Remove(book);
+        _context.Books.Remove(book);
+        _context.SaveChanges();
 
         return true;
     }
