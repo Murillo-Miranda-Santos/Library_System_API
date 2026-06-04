@@ -4,6 +4,7 @@ using LibrarySystemAPI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibrarySystemAPI.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    partial class LibraryContextModelSnapshot : ModelSnapshot
+    [Migration("20260603140817_Adicionando propriedades de navegação")]
+    partial class Adicionandopropriedadesdenavegação
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,13 +96,13 @@ namespace LibrarySystemAPI.Migrations
             modelBuilder.Entity("LibrarySystemAPI.Models.Loan", b =>
                 {
                     b.HasOne("LibrarySystemAPI.Models.Book", "Book")
-                        .WithMany("Loans")
+                        .WithMany()
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("LibrarySystemAPI.Models.User", "User")
-                        .WithMany("Loans")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -107,16 +110,6 @@ namespace LibrarySystemAPI.Migrations
                     b.Navigation("Book");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("LibrarySystemAPI.Models.Book", b =>
-                {
-                    b.Navigation("Loans");
-                });
-
-            modelBuilder.Entity("LibrarySystemAPI.Models.User", b =>
-                {
-                    b.Navigation("Loans");
                 });
 #pragma warning restore 612, 618
         }

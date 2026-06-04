@@ -1,4 +1,5 @@
-﻿using LibrarySystemAPI.Models;
+﻿using LibrarySystemAPI.DTOs.users;
+using LibrarySystemAPI.Models;
 using LibrarySystemAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,51 +19,50 @@ namespace LibrarySystemAPI.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_userService.GetAllUsers());
+            var UserResponseDto = _userService.GetAllUsers();
+
+            return Ok(UserResponseDto);
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var user = _userService.GetUser(id);
+            var UserResponseDto = _userService.GetUser(id);
 
-            if (user == null)
+            if (UserResponseDto == null)
                 return NotFound("User not found.");
 
-            return Ok(user);
+            return Ok(UserResponseDto);
         }
 
         [HttpPost]
-        public IActionResult Post(User user)
+        public IActionResult Post(CreateUserDto createUserDto)
         {
-            var created = _userService.PostUser(user);
+            var userResponseDto = _userService.PostUser(createUserDto); 
 
-            if (created == null)
-                return BadRequest("Invalid user data.");
-
-            return Ok(created);
+            return Ok(userResponseDto);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, User updatedUser)
+        public IActionResult Put(int id, UpdateUserDto updateUserDto)
         {
-            var user = _userService.PutUser(id, updatedUser);
+            var userResponseDto = _userService.PutUser(id, updateUserDto);
 
-            if (user == null)
+            if (userResponseDto == null)
                 return NotFound("User not found.");
 
-            return Ok(user);
+            return Ok(userResponseDto);
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var result = _userService.DeleteUser(id);
+            var userResponseDto = _userService.DeleteUser(id);
 
-            if (result == null)
+            if (userResponseDto == null)
                 return NotFound("User not found.");
 
-            if (result == false)
+            if (userResponseDto == false)
                 return BadRequest("User has active loans.");
 
             return NoContent();

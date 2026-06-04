@@ -1,4 +1,5 @@
-﻿using LibrarySystemAPI.Models;
+﻿using LibrarySystemAPI.DTOs.books;
+using LibrarySystemAPI.Models;
 using LibrarySystemAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,51 +19,50 @@ namespace LibrarySystemAPI.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_bookService.GetAllBooks());
+            var bookResponseDtos = _bookService.GetAllBooks();
+
+            return Ok(bookResponseDtos);
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var book = _bookService.GetBook(id);
+            var bookResponseDto = _bookService.GetBook(id);
 
-            if (book == null)
+            if (bookResponseDto == null)
                 return NotFound("Book not found.");
 
-            return Ok(book);
+            return Ok(bookResponseDto);
         }
 
         [HttpPost]
-        public IActionResult Post(Book book)
+        public IActionResult Post(CreateBookDto createBookDto)
         {
-            var created = _bookService.PostBook(book);
+            var bookResponseDto = _bookService.PostBook(createBookDto);
 
-            if (created == null)
-                return BadRequest("Invalid book data.");
-
-            return Ok(created);
+            return Ok(bookResponseDto);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, Book updatedBook)
+        public IActionResult Put(UpdateBookDto updateBookDto, int id)
         {
-            var book = _bookService.PutBook(id, updatedBook);
+            var bookResponseDto = _bookService.PutBook(id, updateBookDto);
 
-            if (book == null)
+            if (bookResponseDto == null)
                 return NotFound("Book not found.");
 
-            return Ok(book);
+            return Ok(bookResponseDto);
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var result = _bookService.DeleteBook(id);
+            var bookResponseDto = _bookService.DeleteBook(id);
 
-            if (result == null)
+            if (bookResponseDto == null)
                 return NotFound("Book not found.");
 
-            if (result == false)
+            if (bookResponseDto.Status == "Alugado")
                 return BadRequest("Book is currently loaned.");
 
             return NoContent();

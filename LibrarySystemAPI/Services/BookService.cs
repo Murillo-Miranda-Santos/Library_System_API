@@ -1,4 +1,5 @@
-﻿using LibrarySystemAPI.Models;
+﻿using LibrarySystemAPI.DTOs.books;
+using LibrarySystemAPI.Models;
 namespace LibrarySystemAPI.Services;
 
 public class BookService
@@ -10,28 +11,71 @@ public class BookService
         _context = context;
     }
 
-    public List<Book> GetAllBooks()
+    public List<BookResponseDto> GetAllBooks()
     {
-        return _context.Books.ToList();
+        List<BookResponseDto> bookResponseDtos = new List<BookResponseDto>();
+
+        foreach (var book in _context.Books)
+        {
+            BookResponseDto dto = new()
+            {
+                Id = book.Id,
+                Title = book.Title,
+            };
+
+            if (book.IsLoaned == true)
+                dto.Status = "Alugado";
+            else
+                dto.Status = "Disponível";
+
+            bookResponseDtos.Add(dto);
+        }
+
+        return bookResponseDtos;
     }
 
-    public Book? GetBook(int id)
+    public BookResponseDto? GetBook(int id)
     {
-        return _context.Books.FirstOrDefault(x => x.Id == id);
-    }
+        var book = _context.Books.FirstOrDefault(x => x.Id == id);
 
-    public Book? PostBook(Book book)
-    {
-        if (string.IsNullOrWhiteSpace(book.Title))
+        if (book == null)
             return null;
+
+        BookResponseDto bookResponseDto = new()
+        {
+            Id = book.Id,
+            Title = book.Title,
+        };
+
+        if (book.IsLoaned == true)
+            bookResponseDto.Status = "Alugado";
+        else
+            bookResponseDto.Status = "Disponível";
+
+        return bookResponseDto;
+    }
+
+    public BookResponseDto? PostBook(CreateBookDto createBookDto)
+    {
+        Book book = new()
+        {
+            Title = createBookDto.Title
+        };
 
         _context.Books.Add(book);
         _context.SaveChanges();
 
-        return book;
+        BookResponseDto bookResponseDto = new()
+        {
+            Id = book.Id,
+            Title = book.Title,
+            Status = "Disponível"
+        };
+
+        return bookResponseDto;
     }
 
-    public Book? PutBook(int id, Book updatedBook)
+    public BookResponseDto? PutBook(int id, UpdateBookDto updatedBook)
     {
         var book = _context.Books.FirstOrDefault(x => x.Id == id);
 
@@ -41,24 +85,44 @@ public class BookService
         book.Title = updatedBook.Title;
         _context.SaveChanges();
 
-        return book;
+        BookResponseDto bookResponseDto = new()
+        {
+            Id = book.Id,
+            Title = book.Title
+        };
+
+        if (book.IsLoaned == true)
+            bookResponseDto.Status = "Alugado";
+        else
+            bookResponseDto.Status = "Disponível";
+
+        return bookResponseDto;
     }
 
-    public bool? DeleteBook(int id)
+    public BookResponseDto? DeleteBook(int id)
     {
         var book = _context.Books.FirstOrDefault(x => x.Id == id);
 
         if (book == null)
             return null;
 
-        var isLoaned = _context.Loans.Any(x => x.BookId == id && x.ReturnDate == null); 
-        
-        if (isLoaned == true) 
-            return false;
+        BookResponseDto bookResponseDto = new()
+        {
+            Id = book.Id,
+            Title = book.Title,
+        };
+
+        if (book.IsLoaned == true)
+            bookResponseDto.Status = "Alugado";
+        else
+            bookResponseDto.Status = "Disponível";
+
+        if (bookResponseDto.Status == "Alugado")
+            return bookResponseDto;
 
         _context.Books.Remove(book);
         _context.SaveChanges();
 
-        return true;
+        return bookResponseDto;
     }
 }

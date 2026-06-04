@@ -1,4 +1,5 @@
-﻿using LibrarySystemAPI.Models;
+﻿using LibrarySystemAPI.DTOs.loans;
+using LibrarySystemAPI.Models;
 using LibrarySystemAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,36 +15,35 @@ namespace LibrarySystemAPI.Controllers
         {
             _loanService = loanService;
         }
-
+        
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_loanService.GetAllLoans());
+            var loanResponseDtos = _loanService.GetAllLoans();
+
+            return Ok(loanResponseDtos);
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var loan = _loanService.GetLoan(id);
+            var loanResponseDto = _loanService.GetLoan(id);
 
-            if (loan == null)
+            if (loanResponseDto == null)
                 return NotFound("Loan not found.");
 
-            return Ok(loan);
+            return Ok(loanResponseDto);
         }
 
         [HttpPost]
-        public IActionResult Post(Loan loan)
+        public IActionResult Post(CreateLoanDto createLoanDto)
         {
-            var result = _loanService.PostLoan(loan);
+            var result = _loanService.PostLoan(createLoanDto);
 
-            if (result == null)
-                return NotFound("User or book not found.");
+            if (result.Success == false)
+                return BadRequest(result.Message);
 
-            if (result == false)
-                return BadRequest("Book already loaned.");
-
-            return Ok(loan);
+            return Ok(result.Data);
         }
 
         [HttpPost("return/{id}")]
@@ -51,13 +51,10 @@ namespace LibrarySystemAPI.Controllers
         {
             var result = _loanService.PostReturn(id);
 
-            if (result == null)
-                return NotFound("Loan not found.");
+            if (result.Success == false)
+                return BadRequest(result.Message);
 
-            if (result == false)
-                return BadRequest("Book already returned.");
-
-            return Ok("Book returned successfully.");
+            return Ok(result.Data);
         }
     }
 }

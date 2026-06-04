@@ -1,4 +1,8 @@
-﻿using LibrarySystemAPI.Models;
+﻿using LibrarySystemAPI.Common;
+using LibrarySystemAPI.DTOs.books;
+using LibrarySystemAPI.DTOs.loans;
+using LibrarySystemAPI.Models;
+using Microsoft.EntityFrameworkCore;
 namespace LibrarySystemAPI.Services;
 
 public class LoanService
@@ -10,60 +14,154 @@ public class LoanService
         _context = context;
     }
 
-    public List<Loan> GetAllLoans()
+    public List<LoanResponseDto> GetAllLoans()
     {
-        return _context.Loans.ToList();
+        List<LoanResponseDto> loanResponseDtos = new List<LoanResponseDto>();
+
+        var loans = _context.Loans.Include(x => x.User).Include(x => x.Book).ToList();
+
+        foreach (var loan in loans)
+        {
+            LoanResponseDto loanResponseDto = new()
+            {
+                Id = loan.Id,
+                UserName = loan.User.Name,
+                BookTitle = loan.Book.Title,
+                LoanDate = loan.LoanDate,
+                ReturnDate = loan.ReturnDate
+            };
+
+            if (loan.ReturnDate == null)
+                loanResponseDto.Status = "Ativo";
+            else
+                loanResponseDto.Status = "Devolvido";
+
+            loanResponseDtos.Add(loanResponseDto);
+        }
+
+        return loanResponseDtos;
     }
 
-    public Loan? GetLoan(int id)
+    public LoanResponseDto? GetLoan(int id)
     {
-        return _context.Loans.FirstOrDefault(x => x.Id == id);
-    }
-
-    public bool? PostLoan(Loan loan)
-    {
-        var exUser = _context.Users.Any(x => x.Id == loan.UserId);
-        var exBook = _context.Books.Any(x => x.Id == loan.BookId);
-
-        if (!exUser || !exBook)
-            return null;
-
-        var book = _context.Books.FirstOrDefault(x => x.Id == loan.BookId);
-
-        if (book.IsLoaned) 
-            return false;
-
-        loan.Id = _context.Loans.Any() ? _context.Loans.Max(x => x.Id) + 1 : 1;
-        loan.LoanDate = DateTime.Now;
-
-        _context.Loans.Add(loan);
-
-        book.IsLoaned = true;
-        _context.SaveChanges();
-
-        return true;
-    }
-
-    public bool? PostReturn(int id)
-    {
-        var loan = _context.Loans.FirstOrDefault(x => x.Id == id);
+        var loan = _context.Loans.Include(x => x.User).Include(x => x.Book).FirstOrDefault(x => x.Id == id);
 
         if (loan == null)
             return null;
 
+        LoanResponseDto loanResponseDto = new()
+        {
+            Id = loan.Id,
+            UserName = loan.User.Name,
+            BookTitle = loan.Book.Title,
+            LoanDate = loan.LoanDate,
+            ReturnDate = loan.ReturnDate
+        };
+
+        if (loanResponseDto.ReturnDate == null)
+            loanResponseDto.Status = "Ativo";
+        else
+            loanResponseDto.Status = "Devolvido";
+
+        return loanResponseDto;
+    }
+    public ServiceResult<LoanResponseDto?> PostLoan(CreateLoanDto createLoanDto)
+    {
+        var user = _context.Users.FirstOrDefault(x => x.Id == createLoanDto.UserId);
+        var book = _context.Books.FirstOrDefault(x => x.Id == createLoanDto.BookId);
+
+        if (user == null || book == null)
+        {
+            return new ServiceResult<LoanResponseDto?>
+            {
+                Success = false,
+                Message = "Livro ou usuario não encontrado."
+            };
+        }  
+
+        if (book.IsLoaned)
+        {
+            return new ServiceResult<LoanResponseDto?>
+            {
+                Success = false,
+                Message = "O livro já está alugado."
+            };
+        }
+
+        Loan loan = new()
+        {
+            BookId = book.Id,
+            UserId = user.Id,
+            LoanDate = DateTime.Now,
+        };
+
+        _context.Loans.Add(loan);
+
+        book.IsLoaned = true;
+
+        _context.SaveChanges();
+
+        LoanResponseDto loanResponseDto = new()
+        {
+            Id = loan.Id,
+            UserName = user.Name,
+            BookTitle = book.Title,
+            LoanDate = loan.LoanDate,
+            ReturnDate = loan.ReturnDate,
+            Status = "Ativo"
+        };
+
+        return new ServiceResult<LoanResponseDto?>
+        {
+            Success = true,
+            Data = loanResponseDto
+        };
+    }
+
+    public ServiceResult<LoanResponseDto?> PostReturn(int id)
+    {
+        var loan = _context.Loans.FirstOrDefault(x => x.Id == id);
+
+        if (loan == null)
+        {
+            return new ServiceResult<LoanResponseDto?>()
+            {
+                Success = false,
+                Message = "Empréstimo não encontrado."
+            };
+        }
+        
         if (loan.ReturnDate != null)
-            return false;
+        {
+            return new ServiceResult<LoanResponseDto?>
+            {
+                Success = false,
+                Message = "Livro já devolvido."
+            };
+        }
 
         var book = _context.Books.FirstOrDefault(x => x.Id == loan.BookId);
-
-        if (book == null)
-            return null;
+        var user = _context.Users.FirstOrDefault(x => x.Id == loan.UserId);
 
         loan.ReturnDate = DateTime.Now;
         book.IsLoaned = false;
 
         _context.SaveChanges();
 
-        return true;
+        LoanResponseDto loanResponseDto = new()
+        {
+            Id = loan.Id,
+            BookTitle = book.Title,
+            UserName = user.Name,
+            LoanDate = loan.LoanDate,
+            ReturnDate = loan.ReturnDate,
+            Status = "Devolvido"
+        };
+
+        return new ServiceResult<LoanResponseDto?>()
+        {
+            Success = true,
+            Data = loanResponseDto
+        };
     }
 }

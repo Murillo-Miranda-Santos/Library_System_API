@@ -1,4 +1,5 @@
-﻿using LibrarySystemAPI.Models;
+﻿using LibrarySystemAPI.DTOs.users;
+using LibrarySystemAPI.Models;
 namespace LibrarySystemAPI.Services;
 
 public class UserService
@@ -10,44 +11,82 @@ public class UserService
         _context = context;
     }
 
-    public List<User>? GetAllUsers()
+    public List<UserResponseDto> GetAllUsers()
     {
-        return _context.Users.ToList();
+        List<UserResponseDto> userResponseDtos = new List<UserResponseDto>();
+
+        foreach (var user in _context.Users)
+        {
+            UserResponseDto dto = new()
+            {
+                Id = user.Id,
+                Name = user.Name
+            };
+
+            userResponseDtos.Add(dto);
+        }
+
+        return userResponseDtos;
     }
 
-    public User? GetUser(int id)
+    public UserResponseDto? GetUser(int id)
     {
-        return _context.Users.FirstOrDefault(x => x.Id == id);
-    }
+        var book = _context.Users.FirstOrDefault(x => x.Id == id);
 
-    public User? PostUser(User user)
-    {
-        if (string.IsNullOrWhiteSpace(user.Name))
+        if (book == null)
             return null;
+
+        UserResponseDto userResponseDto = new()
+        {
+            Id = book.Id,
+            Name = book.Name
+        };
+
+        return userResponseDto;
+    }
+
+    public UserResponseDto? PostUser(CreateUserDto createUserDto)
+    {
+        User user = new()
+        {
+            Name = createUserDto.Name,
+        };
 
         _context.Users.Add(user);
         _context.SaveChanges();
 
-        return user;
+        UserResponseDto userResponseDto = new()
+        {
+            Id = user.Id,
+            Name = user.Name,
+        };
+
+        return userResponseDto;
     }
 
-    public User? PutUser(int id, User updatedUser)
+    public UserResponseDto? PutUser(int id, UpdateUserDto updateUserDto)
     {
         var user = _context.Users.FirstOrDefault(x => x.Id == id);
 
         if (user == null) 
             return null;
 
-        var lastUser = new User
+        var lastUser = new User()
         {
             Id = user.Id,
             Name = user.Name,
         };
 
-        user.Name = updatedUser.Name;
+        user.Name = updateUserDto.Name;
         _context.SaveChanges();
 
-        return user;
+        UserResponseDto userResponseDto = new()
+        {
+            Id = user.Id,
+            Name= user.Name
+        };
+
+        return userResponseDto;
     }
 
     public bool? DeleteUser(int id)
