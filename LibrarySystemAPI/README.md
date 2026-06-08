@@ -26,6 +26,8 @@ This project was built as part of my backend development learning journey using 
 - MySQL
 - Swagger / OpenAPI
 - Dependency Injection
+- DTOs
+- Async/Await
 
 ---
 
@@ -153,8 +155,6 @@ This repository will continue evolving as I learn more about backend development
 
 ### Future Improvements
 
-- DTOs
-- Async/Await
 - Authentication & Authorization (JWT)
 - Better validations
 - Repository Pattern
