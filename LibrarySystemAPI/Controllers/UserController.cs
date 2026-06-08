@@ -17,17 +17,17 @@ namespace LibrarySystemAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            var UserResponseDto = _userService.GetAllUsers();
+            var UserResponseDto = await _userService.GetAllUsers();
 
             return Ok(UserResponseDto);
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var UserResponseDto = _userService.GetUser(id);
+            var UserResponseDto = await _userService.GetUser(id);
 
             if (UserResponseDto == null)
                 return NotFound("User not found.");
@@ -36,17 +36,17 @@ namespace LibrarySystemAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post(CreateUserDto createUserDto)
+        public async Task<IActionResult> Post(CreateUserDto createUserDto)
         {
-            var userResponseDto = _userService.PostUser(createUserDto); 
+            var userResponseDto = await _userService.PostUser(createUserDto); 
 
             return Ok(userResponseDto);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, UpdateUserDto updateUserDto)
+        public async Task<IActionResult> Put(int id, UpdateUserDto updateUserDto)
         {
-            var userResponseDto = _userService.PutUser(id, updateUserDto);
+            var userResponseDto = await _userService.PutUser(id, updateUserDto);
 
             if (userResponseDto == null)
                 return NotFound("User not found.");
@@ -55,15 +55,12 @@ namespace LibrarySystemAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var userResponseDto = _userService.DeleteUser(id);
+            var result = await _userService.DeleteUser(id);
 
-            if (userResponseDto == null)
-                return NotFound("User not found.");
-
-            if (userResponseDto == false)
-                return BadRequest("User has active loans.");
+            if (result.Success == false)
+                return NotFound(result.Message);
 
             return NoContent();
         }

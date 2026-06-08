@@ -17,17 +17,17 @@ namespace LibrarySystemAPI.Controllers
         }
         
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            var loanResponseDtos = _loanService.GetAllLoans();
+            var loanResponseDtos = await _loanService.GetAllLoans();
 
             return Ok(loanResponseDtos);
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var loanResponseDto = _loanService.GetLoan(id);
+            var loanResponseDto = await _loanService.GetLoan(id);
 
             if (loanResponseDto == null)
                 return NotFound("Loan not found.");
@@ -36,9 +36,9 @@ namespace LibrarySystemAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post(CreateLoanDto createLoanDto)
+        public async Task<IActionResult> Post(CreateLoanDto createLoanDto)
         {
-            var result = _loanService.PostLoan(createLoanDto);
+            var result = await _loanService.PostLoan(createLoanDto);
 
             if (result.Success == false)
                 return BadRequest(result.Message);
@@ -47,14 +47,14 @@ namespace LibrarySystemAPI.Controllers
         }
 
         [HttpPost("return/{id}")]
-        public IActionResult Return(int id)
+        public async Task<IActionResult> Return(int id)
         {
-            var result = _loanService.PostReturn(id);
+            var result = await _loanService.PostReturn(id);
 
             if (result.Success == false)
                 return BadRequest(result.Message);
 
-            return Ok(result.Data);
+            return Ok(result.Message + result.Data);
         }
     }
 }

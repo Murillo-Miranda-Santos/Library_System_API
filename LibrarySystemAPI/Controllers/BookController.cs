@@ -17,17 +17,17 @@ namespace LibrarySystemAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            var bookResponseDtos = _bookService.GetAllBooks();
+            var bookResponseDtos = await _bookService.GetAllBooks();
 
             return Ok(bookResponseDtos);
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var bookResponseDto = _bookService.GetBook(id);
+            var bookResponseDto = await _bookService.GetBook(id);
 
             if (bookResponseDto == null)
                 return NotFound("Book not found.");
@@ -36,17 +36,17 @@ namespace LibrarySystemAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post(CreateBookDto createBookDto)
+        public async Task<IActionResult> Post(CreateBookDto createBookDto)
         {
-            var bookResponseDto = _bookService.PostBook(createBookDto);
+            var bookResponseDto = await _bookService.PostBook(createBookDto);
 
             return Ok(bookResponseDto);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(UpdateBookDto updateBookDto, int id)
+        public async Task<IActionResult> Put(UpdateBookDto updateBookDto, int id)
         {
-            var bookResponseDto = _bookService.PutBook(id, updateBookDto);
+            var bookResponseDto = await _bookService.PutBook(id, updateBookDto);
 
             if (bookResponseDto == null)
                 return NotFound("Book not found.");
@@ -55,9 +55,9 @@ namespace LibrarySystemAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var bookResponseDto = _bookService.DeleteBook(id);
+            var bookResponseDto = await _bookService.DeleteBook(id);
 
             if (bookResponseDto == null)
                 return NotFound("Book not found.");
