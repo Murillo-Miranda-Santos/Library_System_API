@@ -35,15 +35,15 @@ public class UserService
 
     public async Task<UserResponseDto?> GetUser(int id)
     {
-        var book = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+        var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
 
-        if (book == null)
+        if (user == null)
             return null;
 
         UserResponseDto userResponseDto = new()
         {
-            Id = book.Id,
-            Name = book.Name
+            Id = user.Id,
+            Name = user.Name
         };
 
         return userResponseDto;
@@ -95,7 +95,7 @@ public class UserService
 
     public async Task<ServiceResult<User>> DeleteUser(int id)
     {
-        var user = _context.Users.FirstOrDefault(x => x.Id == id);
+        var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
 
         if (user == null)
         {

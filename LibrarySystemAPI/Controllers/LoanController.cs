@@ -54,7 +54,7 @@ namespace LibrarySystemAPI.Controllers
             if (result.Success == false)
                 return BadRequest(result.Message);
 
-            return Ok(result.Message + result.Data);
+            return Ok(result.Message);
         }
     }
 }
