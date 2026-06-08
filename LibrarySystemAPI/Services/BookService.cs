@@ -1,5 +1,6 @@
 ﻿using LibrarySystemAPI.DTOs.books;
 using LibrarySystemAPI.Models;
+using Microsoft.EntityFrameworkCore;
 namespace LibrarySystemAPI.Services;
 
 public class BookService
@@ -11,11 +12,13 @@ public class BookService
         _context = context;
     }
 
-    public List<BookResponseDto> GetAllBooks()
+    public async Task<List<BookResponseDto>> GetAllBooks()
     {
         List<BookResponseDto> bookResponseDtos = new List<BookResponseDto>();
 
-        foreach (var book in _context.Books)
+        var books = await _context.Books.ToListAsync();
+
+        foreach (var book in books)
         {
             BookResponseDto dto = new()
             {
@@ -34,9 +37,9 @@ public class BookService
         return bookResponseDtos;
     }
 
-    public BookResponseDto? GetBook(int id)
+    public async Task<BookResponseDto?> GetBook(int id)
     {
-        var book = _context.Books.FirstOrDefault(x => x.Id == id);
+        var book = await _context.Books.FirstOrDefaultAsync(x => x.Id == id);
 
         if (book == null)
             return null;
@@ -55,15 +58,15 @@ public class BookService
         return bookResponseDto;
     }
 
-    public BookResponseDto? PostBook(CreateBookDto createBookDto)
+    public async Task<BookResponseDto?> PostBook(CreateBookDto createBookDto)
     {
         Book book = new()
         {
             Title = createBookDto.Title
         };
 
-        _context.Books.Add(book);
-        _context.SaveChanges();
+        await _context.Books.AddAsync(book);
+        await _context.SaveChangesAsync();
 
         BookResponseDto bookResponseDto = new()
         {
@@ -75,15 +78,15 @@ public class BookService
         return bookResponseDto;
     }
 
-    public BookResponseDto? PutBook(int id, UpdateBookDto updatedBook)
+    public async Task<BookResponseDto?> PutBook(int id, UpdateBookDto updatedBook)
     {
-        var book = _context.Books.FirstOrDefault(x => x.Id == id);
+        var book = await _context.Books.FirstOrDefaultAsync(x => x.Id == id);
 
         if (book == null)
             return null;
 
         book.Title = updatedBook.Title;
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         BookResponseDto bookResponseDto = new()
         {
@@ -99,9 +102,9 @@ public class BookService
         return bookResponseDto;
     }
 
-    public BookResponseDto? DeleteBook(int id)
+    public async Task<BookResponseDto?> DeleteBook(int id)
     {
-        var book = _context.Books.FirstOrDefault(x => x.Id == id);
+        var book = await _context.Books.FirstOrDefaultAsync(x => x.Id == id);
 
         if (book == null)
             return null;
@@ -121,7 +124,7 @@ public class BookService
             return bookResponseDto;
 
         _context.Books.Remove(book);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return bookResponseDto;
     }

@@ -14,11 +14,11 @@ public class LoanService
         _context = context;
     }
 
-    public List<LoanResponseDto> GetAllLoans()
+    public async Task<List<LoanResponseDto>> GetAllLoans()
     {
         List<LoanResponseDto> loanResponseDtos = new List<LoanResponseDto>();
 
-        var loans = _context.Loans.Include(x => x.User).Include(x => x.Book).ToList();
+        var loans = await _context.Loans.Include(x => x.User).Include(x => x.Book).ToListAsync();
 
         foreach (var loan in loans)
         {
@@ -42,9 +42,9 @@ public class LoanService
         return loanResponseDtos;
     }
 
-    public LoanResponseDto? GetLoan(int id)
+    public async Task<LoanResponseDto?> GetLoan(int id)
     {
-        var loan = _context.Loans.Include(x => x.User).Include(x => x.Book).FirstOrDefault(x => x.Id == id);
+        var loan = await _context.Loans.Include(x => x.User).Include(x => x.Book).FirstOrDefaultAsync(x => x.Id == id);
 
         if (loan == null)
             return null;
@@ -65,10 +65,10 @@ public class LoanService
 
         return loanResponseDto;
     }
-    public ServiceResult<LoanResponseDto?> PostLoan(CreateLoanDto createLoanDto)
+    public async Task<ServiceResult<LoanResponseDto?>> PostLoan(CreateLoanDto createLoanDto)
     {
-        var user = _context.Users.FirstOrDefault(x => x.Id == createLoanDto.UserId);
-        var book = _context.Books.FirstOrDefault(x => x.Id == createLoanDto.BookId);
+        var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == createLoanDto.UserId);
+        var book = await _context.Books.FirstOrDefaultAsync(x => x.Id == createLoanDto.BookId);
 
         if (user == null || book == null)
         {
@@ -95,11 +95,11 @@ public class LoanService
             LoanDate = DateTime.Now,
         };
 
-        _context.Loans.Add(loan);
+        await _context.Loans.AddAsync(loan);
 
         book.IsLoaned = true;
 
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         LoanResponseDto loanResponseDto = new()
         {
@@ -118,9 +118,9 @@ public class LoanService
         };
     }
 
-    public ServiceResult<LoanResponseDto?> PostReturn(int id)
+    public async Task<ServiceResult<LoanResponseDto?>> PostReturn(int id)
     {
-        var loan = _context.Loans.FirstOrDefault(x => x.Id == id);
+        var loan = await _context.Loans.FirstOrDefaultAsync(x => x.Id == id);
 
         if (loan == null)
         {
@@ -140,13 +140,13 @@ public class LoanService
             };
         }
 
-        var book = _context.Books.FirstOrDefault(x => x.Id == loan.BookId);
-        var user = _context.Users.FirstOrDefault(x => x.Id == loan.UserId);
+        var book = await _context.Books.FirstOrDefaultAsync(x => x.Id == loan.BookId);
+        var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == loan.UserId);
 
         loan.ReturnDate = DateTime.Now;
         book.IsLoaned = false;
 
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         LoanResponseDto loanResponseDto = new()
         {
@@ -161,6 +161,7 @@ public class LoanService
         return new ServiceResult<LoanResponseDto?>()
         {
             Success = true,
+            Message = "Empréstimo finalizado.",
             Data = loanResponseDto
         };
     }

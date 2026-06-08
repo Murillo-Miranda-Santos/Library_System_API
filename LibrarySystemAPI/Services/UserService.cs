@@ -1,5 +1,7 @@
-﻿using LibrarySystemAPI.DTOs.users;
+﻿using LibrarySystemAPI.Common;
+using LibrarySystemAPI.DTOs.users;
 using LibrarySystemAPI.Models;
+using Microsoft.EntityFrameworkCore;
 namespace LibrarySystemAPI.Services;
 
 public class UserService
@@ -11,11 +13,13 @@ public class UserService
         _context = context;
     }
 
-    public List<UserResponseDto> GetAllUsers()
+    public async Task<List<UserResponseDto>> GetAllUsers()
     {
         List<UserResponseDto> userResponseDtos = new List<UserResponseDto>();
 
-        foreach (var user in _context.Users)
+        var users = await _context.Users.ToListAsync();
+
+        foreach (var user in users)
         {
             UserResponseDto dto = new()
             {
@@ -29,9 +33,9 @@ public class UserService
         return userResponseDtos;
     }
 
-    public UserResponseDto? GetUser(int id)
+    public async Task<UserResponseDto?> GetUser(int id)
     {
-        var book = _context.Users.FirstOrDefault(x => x.Id == id);
+        var book = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
 
         if (book == null)
             return null;
@@ -45,15 +49,15 @@ public class UserService
         return userResponseDto;
     }
 
-    public UserResponseDto? PostUser(CreateUserDto createUserDto)
+    public async Task<UserResponseDto?> PostUser(CreateUserDto createUserDto)
     {
         User user = new()
         {
             Name = createUserDto.Name,
         };
 
-        _context.Users.Add(user);
-        _context.SaveChanges();
+        await _context.Users.AddAsync(user);
+        await _context.SaveChangesAsync();
 
         UserResponseDto userResponseDto = new()
         {
@@ -64,9 +68,9 @@ public class UserService
         return userResponseDto;
     }
 
-    public UserResponseDto? PutUser(int id, UpdateUserDto updateUserDto)
+    public async Task<UserResponseDto?> PutUser(int id, UpdateUserDto updateUserDto)
     {
-        var user = _context.Users.FirstOrDefault(x => x.Id == id);
+        var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
 
         if (user == null) 
             return null;
@@ -78,7 +82,7 @@ public class UserService
         };
 
         user.Name = updateUserDto.Name;
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         UserResponseDto userResponseDto = new()
         {
@@ -89,22 +93,39 @@ public class UserService
         return userResponseDto;
     }
 
-    public bool? DeleteUser(int id)
+    public async Task<ServiceResult<User>> DeleteUser(int id)
     {
         var user = _context.Users.FirstOrDefault(x => x.Id == id);
 
         if (user == null)
-            return null;
+        {
+            return new ServiceResult<User>()
+            {
+                Success = false,
+                Message = "Usuario não encontrado."
+            };
+        }
+            
 
-        var hasLoan = _context.Loans.Any(x =>
+        var hasLoan = await _context.Loans.AnyAsync(x =>
         x.UserId == id && x.ReturnDate == null);
 
-        if (hasLoan == true) 
-             return false;
+        if (hasLoan == true)
+        {
+            return new ServiceResult<User>()
+            {
+                Success = false,
+                Message = "Usuario possuí empréstimos ativos."
+            };
+        }
 
         _context.Users.Remove(user);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
-        return true;
+        return new ServiceResult<User>()
+        {
+            Success = true,
+            Data = user
+        };
     }
 }
